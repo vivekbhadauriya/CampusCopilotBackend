@@ -33,11 +33,10 @@ async def chat(request: ChatRequest):
             chat_memory[user_id] = [{"role": "system", "content": "You are CampusCopilot, an AI assistant for college life."}]
         chat_memory[user_id].append({"role": "user", "content": user_message})
 
-        response = await ask_llm(chat_memory[user_id])
+        response = ask_llm(chat_memory[user_id])
         chat_memory[user_id].append({"role": "assistant", "content": response})
 
         return {"response": response}
     except Exception as e:
-        # Log the error for debugging
         print("LLM error:", e)
         return {"response": "Sorry, I couldn't process your request right now."}

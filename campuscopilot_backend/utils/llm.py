@@ -1,14 +1,14 @@
-import openai
-import os
-from dotenv import load_dotenv
+from .langchain_llm import langchain_llm
+import logging
 
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+logger = logging.getLogger(__name__)
 
-async def ask_llm(messages):
-    client = openai.OpenAI(api_key=openai.api_key)
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=messages
-    )
-    return response.choices[0].message.content
+def ask_llm(messages):
+    try:
+        logger.info("Generating response from LangChain+Google LLM")
+        response =  langchain_llm.generate_response(messages)
+        logger.info("Successfully generated response")
+        return response
+    except Exception as e:
+        logger.error(f"Error in ask_llm: {str(e)}")
+        return "Sorry, I couldn't generate a response right now."
