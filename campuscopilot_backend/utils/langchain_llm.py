@@ -18,10 +18,23 @@ class LangChainHuggingFaceLLM:
             model_kwargs={"temperature": 0.5, "max_new_tokens": 512}
         )
 
-    def generate_response(self, messages, max_length=512):
-        prompt = "\n".join([f"{m['role']}: {m['content']}" for m in messages])
+    def generate_response(self, messages, max_length=256):
+        system_prompt = next((m['content'] for m in messages if m['role'] == 'system'), "")
+        user_message = next((m['content'] for m in reversed(messages) if m['role'] == 'user'), "")
+
+        # Add clear instructions for concise, structured output
+        instructions = (
+            "Please answer concisely, using headings and bullet points where appropriate. "
+            "Keep the response short and easy to read."
+        )
+
+        prompt = f"{system_prompt}\nInstructions: {instructions}\nQuestion: {user_message}\nAnswer:"
+
         try:
             response = self.llm.invoke(prompt)
+            # Only return the part after 'Answer:'
+            if "Answer:" in response:
+                return response.split("Answer:", 1)[1].strip()
             return response.strip()
         except Exception as e:
             logger.error(f"Error in LangChainHuggingFaceLLM.generate_response: {e}")
