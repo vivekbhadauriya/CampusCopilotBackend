@@ -1,0 +1,18 @@
+[
+    {
+      "query": "campus café",
+      "answer": "Campus Café: A casual café serving coffee, sandwiches, and pastries. Location: Student Union Building, First Floor. Hours: Monday-Friday 7am-7pm, Weekends 9am-5pm. Contact: (555) 123-4567"
+    },
+    {
+      "query": "dining hall",
+      "answer": "The Dining Hall: The main dining facility with a variety of food stations. Location: Residence Hall Complex. Hours: Monday-Friday 7am-9pm, Weekends 8am-8pm. Contact: (555) 123-4568"
+    },
+    {
+      "query": "pizza place",
+      "answer": "Pizza Place: Quick pizza by the slice or whole pies. Location: College Avenue, across from the Humanities Building. Hours: Monday-Sunday 11am-2am. Contact: (555) 123-4569"
+    },
+    {
+      "query": "starbucks",
+      "answer": "Library Starbucks: Full-service Starbucks location. Location: Main Library, First Floor. Hours: Monday-Friday 7am-10pm, Weekends 9am-8pm. Contact: (555) 123-4570"
+    }
+  ]
