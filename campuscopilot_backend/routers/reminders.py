@@ -12,7 +12,13 @@ async def get_db():
 
 @router.post("/", response_model=ReminderOut)
 async def create_reminder(reminder: ReminderCreate, db: AsyncSession = Depends(get_db)):
-    db_reminder = Reminder(text=reminder.text, due_time=reminder.due_time)
+    db_reminder = Reminder(
+        title=reminder.title,
+        description=reminder.description,
+        due_time=reminder.due_time,
+        priority=reminder.priority,
+        category=reminder.category
+    )
     db.add(db_reminder)
     await db.commit()
     await db.refresh(db_reminder)

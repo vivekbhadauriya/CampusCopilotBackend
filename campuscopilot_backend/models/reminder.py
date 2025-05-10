@@ -1,26 +1,46 @@
-from pydantic import BaseModel
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Enum
 from db import Base
-import datetime
+import enum
+from pydantic import BaseModel
+from datetime import datetime
+from typing import Optional
+
+class PriorityEnum(str, enum.Enum):
+    low = "low"
+    medium = "medium"
+    high = "high"
+
+class CategoryEnum(str, enum.Enum):
+    academic = "academic"
+    meeting = "meeting"
+    errands = "errands"
+    personal = "personal"
 
 class Reminder(Base):
     __tablename__ = "reminders"
+
     id = Column(Integer, primary_key=True, index=True)
-    text = Column(String, nullable=False)
+    title = Column(String, nullable=False)
+    description = Column(String, nullable=True)
     due_time = Column(DateTime, nullable=False)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    priority = Column(Enum(PriorityEnum), default=PriorityEnum.medium)
+    category = Column(Enum(CategoryEnum), default=CategoryEnum.personal)
     completed = Column(Boolean, default=False)
 
-class ReminderCreate(BaseModel):
-    text: str
-    due_time: datetime.datetime
+# Pydantic models for request/response
+class ReminderBase(BaseModel):
+    title: str
+    description: Optional[str] = None
+    due_time: datetime
+    priority: PriorityEnum = PriorityEnum.medium
+    category: CategoryEnum = CategoryEnum.personal
 
-class ReminderOut(BaseModel):
+class ReminderCreate(ReminderBase):
+    pass
+
+class ReminderOut(ReminderBase):
     id: int
-    text: str
-    due_time: datetime.datetime
-    created_at: datetime.datetime
     completed: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
